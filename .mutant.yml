@@ -1,0 +1,24 @@
+usage: opensource
+integration:
+  name: minitest
+includes:
+  - lib
+  - test
+requires:
+  - equitable
+  - test_helper
+  - equitable_test
+matcher:
+  subjects:
+    - "Equitable*"
+mutation:
+  operators: full
+  timeout: 10.0
+  ignore_patterns:
+    # module_eval's __LINE__ + 1 argument only affects debugging metadata
+    - send{selector=module_eval}
+coverage_criteria:
+  test_result: true
+  process_abort: true
+environment_variables:
+  MUTANT: "true"
