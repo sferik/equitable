@@ -59,8 +59,8 @@ module Equitable
   def self.validate_keys!(keys)
     raise ArgumentError, "at least one attribute is required" if keys.empty?
 
-    invalid = keys.find { |key| !key.is_a?(Symbol) }
-    raise ArgumentError, "attribute must be a Symbol, got #{invalid.class}" if invalid
+    invalid_types = keys.grep_v(Symbol).map(&:class).uniq
+    raise ArgumentError, "attribute must be a Symbol, got #{invalid_types.join(", ")}" if invalid_types.any?
   end
   private_class_method :validate_keys!
 

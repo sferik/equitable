@@ -47,11 +47,16 @@ class EquitableTest < EquitableTestCase
     assert_equal "attribute must be a Symbol, got String", error.message
   end
 
-  def test_uses_is_a_for_symbol_validation
-    symbol_like = Object.new
-    def symbol_like.is_a?(klass) = klass == Symbol || super
+  def test_uses_case_equality_for_symbol_validation
+    error = assert_raises(ArgumentError) { Equitable.new(Object.new) }
 
-    assert_kind_of Module, Equitable.new(symbol_like)
+    assert_match(/attribute must be a Symbol, got Object/, error.message)
+  end
+
+  def test_reports_all_unique_invalid_types
+    error = assert_raises(ArgumentError) { Equitable.new("foo", 123, "bar", 4.5) }
+
+    assert_equal "attribute must be a Symbol, got String, Integer, Float", error.message
   end
 
   def test_each_call_creates_independent_module
