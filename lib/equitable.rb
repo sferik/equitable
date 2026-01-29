@@ -68,12 +68,12 @@ module Equitable
   #
   # @api private
   module InstanceMethods
-    # Equality comparison allowing subclasses
+    # Equality comparison requiring exact class match
     #
     # @param other [Object] object to compare
-    # @return [Boolean] true if other is_a? same class with equal attributes
+    # @return [Boolean] true if other is exact same class with equal attributes
     def ==(other)
-      other.is_a?(self.class) && equitable_keys.all? { |key| public_send(key) == other.public_send(key) }
+      other.instance_of?(self.class) && equitable_keys.all? { |key| public_send(key) == other.public_send(key) }
     end
 
     # Strict equality requiring exact class match

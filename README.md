@@ -81,12 +81,14 @@ home == work  # => true (name is not part of equality)
 
 ### Equality vs Equivalence
 
-Equitable provides two comparison methods with different semantics:
+Equitable provides two comparison methods. Both require an exact class match
+(subclasses are not considered equal), but differ in how they compare attribute
+values:
 
 #### `==` (Equality)
 
-Returns `true` if the other object is an instance of the same class **or a
-subclass**, and all specified attributes are equal using `==`:
+Returns `true` if the other object is an instance of the **exact same class**,
+and all specified attributes are equal using `==`:
 
 ```ruby
 class ColoredPoint < Point
@@ -101,18 +103,15 @@ end
 point = Point.new(1, 2)
 colored = ColoredPoint.new(1, 2, "red")
 
-point == colored   # => true (ColoredPoint is a subclass of Point)
-colored == point   # => false (Point is not a subclass of ColoredPoint)
-```
+point == colored   # => false (different classes)
+colored == point   # => false (different classes)
 
-> [!IMPORTANT]
-> In Ruby, the `==` operator is asymmetric when comparing across class
-> hierarchies. A parent class instance can equal a subclass instance, but not
-> vice versa.
+point == Point.new(1, 2)  # => true (same class, same values)
+```
 
 #### `eql?` (Equivalence)
 
-Returns `true` only if both objects are instances of the **exact same class**,
+Returns `true` if the other object is an instance of the **exact same class**,
 and all specified attributes are equal using `eql?`:
 
 ```ruby
@@ -124,6 +123,12 @@ colored.eql?(point)   # => false (different classes)
 
 point.eql?(Point.new(1, 2))  # => true (same class, same values)
 ```
+
+> [!NOTE]
+> The difference between `==` and `eql?` is how attribute values are compared:
+> `==` uses `==` for attributes, while `eql?` uses `eql?`. For most types this
+> is equivalent, but some types (like `Integer` and `Float`) behave differently:
+> `1 == 1.0` is `true`, but `1.eql?(1.0)` is `false`.
 
 ### Hashing
 

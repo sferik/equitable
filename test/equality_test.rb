@@ -11,7 +11,7 @@ class EqualityTest < EquitableTestCase
   end
 
   def test_equality_with_subclasses
-    assert_equal Point.new(1, 2), ColoredPoint.new(1, 2, "red")
+    refute_equal Point.new(1, 2), ColoredPoint.new(1, 2, "red")
     refute_equal ColoredPoint.new(1, 2, "red"), Point.new(1, 2)
     refute_equal Point.new(1, 2), "string"
     refute_equal Point.new(1, 2), nil
@@ -68,7 +68,7 @@ class EqualityTest < EquitableTestCase
     refute_equal klass.new(1, 2), klass.new(99, 2)
   end
 
-  def test_equality_allows_subclasses
+  def test_equality_requires_exact_class
     parent = Class.new do
       include Equitable.new(:x)
 
@@ -77,7 +77,7 @@ class EqualityTest < EquitableTestCase
     end
     child = Class.new(parent)
 
-    assert_equal parent.new(1), child.new(1)
+    refute_equal parent.new(1), child.new(1)
     refute_equal child.new(1), parent.new(1)
   end
 end
