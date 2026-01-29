@@ -12,6 +12,7 @@ matcher:
   subjects:
     - "Equitable*"
 mutation:
+  operators: full
   timeout: 10.0
   ignore_patterns:
     # module_eval's __LINE__ + 1 argument only affects debugging metadata
