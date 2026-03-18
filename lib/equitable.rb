@@ -60,7 +60,10 @@ module Equitable
     raise ArgumentError, "at least one attribute is required" if keys.empty?
 
     invalid_types = keys.grep_v(Symbol).map(&:class).uniq
-    raise ArgumentError, "attribute must be a Symbol, got #{invalid_types.join(", ")}" if invalid_types.any?
+    return if invalid_types.empty?
+
+    raise ArgumentError,
+      "attribute must be a Symbol, got #{invalid_types.join(", ")}"
   end
   private_class_method :validate_keys!
 
@@ -73,7 +76,8 @@ module Equitable
     # @param other [Object] object to compare
     # @return [Boolean] true if other is_a? same class with equal attributes
     def ==(other)
-      other.is_a?(self.class) && equitable_keys.all? { |key| public_send(key) == other.public_send(key) }
+      other.is_a?(self.class) &&
+        cmp?(:==, other)
     end
 
     # Strict equality requiring exact class match
@@ -81,7 +85,8 @@ module Equitable
     # @param other [Object] object to compare
     # @return [Boolean] true if other is exact same class with eql? attributes
     def eql?(other)
-      other.instance_of?(self.class) && equitable_keys.all? { |key| public_send(key).eql?(other.public_send(key)) }
+      other.instance_of?(self.class) &&
+        cmp?(:eql?, other)
     end
 
     # Hash code based on class and attribute values
@@ -111,7 +116,9 @@ module Equitable
     #
     # @return [String] inspect output
     def inspect
-      attrs = equitable_keys.map { |key| "@#{key}=#{public_send(key).inspect}" }.join(", ")
+      attrs = equitable_keys
+        .map { |key| "@#{key}=#{public_send(key).inspect}" }
+        .join(", ")
       Object.instance_method(:to_s).bind_call(self).sub(/>\z/, " #{attrs}>")
     end
 
@@ -128,6 +135,22 @@ module Equitable
     # @return [Array<Symbol>] instance variable names
     def pretty_print_instance_variables
       equitable_keys.map { |key| :"@#{key}" }
+    end
+
+    private
+
+    # Compare all attributes using the given comparator
+    #
+    # @param comparator [Symbol] method to use for comparison
+    # @param other [Object] object to compare against
+    # @return [Boolean] true if all attributes match
+    #
+    # @api private
+    def cmp?(comparator, other)
+      equitable_keys.all? do |key|
+        public_send(key)
+          .public_send(comparator, other.public_send(key))
+      end
     end
   end
 

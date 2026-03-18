@@ -81,6 +81,8 @@ class PrettyPrintTest < EquitableTestCase
 
     PP.pp(klass.new(1), +"")
 
-    assert called, "pretty_print should use pp_object which calls pretty_print_instance_variables"
+    assert called,
+      "pretty_print should use pp_object " \
+      "which calls pretty_print_instance_variables"
   end
 end

@@ -90,4 +90,14 @@ class InspectTest < EquitableTestCase
 
     assert_match(/\A#<.+:0x[0-9a-f]+ @x=1>\z/, result)
   end
+
+  def test_inspect_has_arity_zero
+    assert_equal 0, Point.instance_method(:inspect).arity
+  end
+
+  def test_inspect_includes_class_name
+    result = Point.new(1, 2).inspect
+
+    assert_match(/\A#<Point:/, result)
+  end
 end

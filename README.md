@@ -1,10 +1,10 @@
 # Equitable
 
+[![Gem Version](https://img.shields.io/gem/v/equitable)](https://rubygems.org/gems/equitable)
 [![Test](https://github.com/sferik/equitable/actions/workflows/test.yml/badge.svg)](https://github.com/sferik/equitable/actions/workflows/test.yml)
 [![Quality](https://github.com/sferik/equitable/actions/workflows/quality.yml/badge.svg)](https://github.com/sferik/equitable/actions/workflows/quality.yml)
 [![Documentation](https://github.com/sferik/equitable/actions/workflows/yard.yml/badge.svg)](https://github.com/sferik/equitable/actions/workflows/yard.yml)
 [![Mutation Testing](https://github.com/sferik/equitable/actions/workflows/mutant.yml/badge.svg)](https://github.com/sferik/equitable/actions/workflows/mutant.yml)
-[![Gem Version](https://img.shields.io/gem/v/equitable)](https://rubygems.org/gems/equitable)
 
 Equitable provides equality, equivalence, hashing, pattern matching, and
 inspection methods for Ruby objects based on explicitly specified attributes.
@@ -290,6 +290,31 @@ Equitable.new()
 Equitable.new("name")
 # => ArgumentError: attribute must be a Symbol, got String
 ```
+
+## Supported Ruby Versions
+
+This library aims to support and is [tested against][test] the following Ruby
+implementations:
+
+* Ruby 3.3
+* Ruby 3.4
+* Ruby 4.0
+
+If something doesn't work on one of these versions, it's a bug.
+
+This library may inadvertently work (or seem to work) on other Ruby versions or
+implementations, however support will only be provided for the implementations
+listed above.
+
+If you would like this library to support another Ruby version or
+implementation, you may volunteer to be a maintainer. Being a maintainer
+entails making sure all tests run and pass on that implementation. When
+something breaks on your implementation, you will be responsible for providing
+patches in a timely fashion. If critical issues for a particular implementation
+exist at the time of a major release, support for that Ruby version may be
+dropped.
+
+[test]: https://github.com/sferik/equitable/actions/workflows/test.yml
 
 ## License
 

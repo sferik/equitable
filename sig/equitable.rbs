@@ -22,6 +22,10 @@ module Equitable
   # Instance methods mixed into classes that include an Equitable module.
   # Assumes equitable_keys is provided by the dynamic module.
   module InstanceMethods : _Equitable
+    private
+
+    # Compare all attributes using the given comparator.
+    def cmp?: (Symbol comparator, untyped other) -> bool
   end
 end
 

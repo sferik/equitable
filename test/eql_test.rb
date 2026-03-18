@@ -3,9 +3,12 @@
 require "test_helper"
 
 class EqlTest < EquitableTestCase
-  def test_eql
+  def test_eql_with_equal_attributes
     assert Point.new(1, 2).eql?(Point.new(1, 2))
     refute Point.new(1, 2).eql?(Point.new(9, 9))
+  end
+
+  def test_eql_with_non_equitable_objects
     refute Point.new(1, 2).eql?(nil)
     refute Point.new(1, 2).eql?("string")
   end
@@ -29,6 +32,28 @@ class EqlTest < EquitableTestCase
     end
 
     refute klass.new(1).eql?(duck.new(1))
+  end
+
+  def test_eql_with_same_object
+    point = Point.new(1, 2)
+
+    assert point.eql?(point)
+  end
+
+  def test_eql_is_symmetric_when_equal
+    a = Point.new(1, 2)
+    b = Point.new(1, 2)
+
+    assert a.eql?(b)
+    assert b.eql?(a)
+  end
+
+  def test_eql_is_symmetric_when_not_equal
+    a = Point.new(1, 2)
+    b = Point.new(9, 9)
+
+    refute a.eql?(b)
+    refute b.eql?(a)
   end
 
   def test_eql_checks_all_attributes

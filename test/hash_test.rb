@@ -79,4 +79,8 @@ class HashTest < EquitableTestCase
 
     assert_equal expected, obj.hash
   end
+
+  def test_hash_has_arity_zero
+    assert_equal 0, Point.instance_method(:hash).arity
+  end
 end

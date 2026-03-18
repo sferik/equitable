@@ -9,14 +9,12 @@ on:
 jobs:
   mutant:
     runs-on: ubuntu-latest
-    env:
-      MUTANT_LICENSE: ${{ secrets.MUTANT_LICENSE }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4"
+          ruby-version: ruby
           bundler-cache: true
       - name: Run mutation testing
         run: bundle exec rake mutant

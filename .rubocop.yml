@@ -11,6 +11,9 @@ AllCops:
   TargetRubyVersion: 3.3
   NewCops: enable
 
+Layout/LineLength:
+  Max: 80
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
@@ -19,9 +22,6 @@ Style/StringLiteralsInInterpolation:
 
 Style/Documentation:
   Enabled: true
-
-Minitest/MultipleAssertions:
-  Max: 4
 
 Naming/MethodParameterName:
   Exclude:

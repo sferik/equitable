@@ -11,10 +11,15 @@ class DeconstructTest < EquitableTestCase
     end
   end
 
-  def test_deconstruct_keys
+  def test_deconstruct_keys_with_nil
     point = Point.new(1, 2, "label")
 
     assert_equal({x: 1, y: 2}, point.deconstruct_keys(nil))
+  end
+
+  def test_deconstruct_keys_with_subset
+    point = Point.new(1, 2, "label")
+
     assert_equal({x: 1}, point.deconstruct_keys([:x]))
     assert_equal({x: 1}, point.deconstruct_keys(%i[x unknown]))
     assert_empty point.deconstruct_keys([:unknown])
@@ -37,7 +42,18 @@ class DeconstructTest < EquitableTestCase
     assert_equal [1, 2, 3], klass.new(1, 2, 3).deconstruct
   end
 
-  def test_deconstruct_keys_returns_requested_keys
+  def test_deconstruct_keys_returns_all_keys_for_nil
+    klass = Class.new do
+      include Equitable.new(:a, :b)
+
+      attr_reader :a, :b
+      def initialize(a, b) = (@a, @b = a, b)
+    end
+
+    assert_equal({a: 1, b: 2}, klass.new(1, 2).deconstruct_keys(nil))
+  end
+
+  def test_deconstruct_keys_returns_only_requested_keys
     klass = Class.new do
       include Equitable.new(:a, :b)
 
@@ -47,7 +63,6 @@ class DeconstructTest < EquitableTestCase
 
     obj = klass.new(1, 2)
 
-    assert_equal({a: 1, b: 2}, obj.deconstruct_keys(nil))
     assert_equal({a: 1}, obj.deconstruct_keys([:a]))
     assert_equal({b: 2}, obj.deconstruct_keys([:b]))
     assert_empty obj.deconstruct_keys([:unknown])
